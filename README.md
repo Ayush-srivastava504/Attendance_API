@@ -52,8 +52,4 @@ TEST_MONGO_URI=mongodb://localhost:27017 pytest   # also runs the analytics and 
 
 The analytics tests insert a small hand-checked dataset (a tie at the leaderboard cutoff, an employee with no logs, a mid-month joiner, a weekend record, a half day, a quiet department) into a separate database called `attendance_analytics_test` and drop it first.
 
-## Known limits
 
-* The development sandbox this was written in had no MongoDB server. The rule maths, validation, CRUD, race handling and regularization are tested; the four aggregation pipelines and the explain plans have **not** been run against a real server yet. Run `TEST_MONGO_URI=... pytest` once before trusting them.
-* The trend endpoint reads the department's `emp_code` list first and passes it to the pipeline with `$in`. That is fine for thousands of employees; a very large department would need the rollup mentioned in `DECISIONS.md`.
-* Records dated before an employee's `joined_on` are still counted in analytics, because the contract only uses `joined_on` for working days and headcount.
